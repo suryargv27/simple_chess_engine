@@ -64,9 +64,9 @@ Where:
 - $s'$ is the resulting state after taking action $a$.
 
 Alpha-beta pruning ensures that unnecessary branches are cut off when:
-- $\alpha \geq \beta$
+- $\alpha \geq \beta$
 - $\alpha = \max(\alpha, V(s', d-1))$ for the maximizing player
-- $\beta = \min(\beta, V(s', d-1))$ for the minimizing player
+- $\beta = \min(\beta, V(s', d-1))$ for the minimizing player
 
 ## File Structure
 ```
