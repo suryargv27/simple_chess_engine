@@ -1,92 +1,83 @@
 # Simple Chess Engine
 
 ## Overview
-This is a simple chess engine implemented in Python using the `python-chess` library. It features basic move evaluation based on piece values and positional heuristics. The engine allows a user to play against the AI, which evaluates moves using a scoring function.
+This is a simple chess engine written in Python using the `python-chess` library. The engine evaluates board positions using piece-square tables and basic material evaluation, and it searches for optimal moves using the minimax algorithm with alpha-beta pruning.
 
 ## Features
-- Supports legal chess moves using `python-chess`.
-- Evaluates board position based on piece-square tables and piece values.
-- Implements an AI that selects moves based on a heuristic evaluation function.
-- Interactive CLI-based gameplay.
-- Supports different game phases (opening, midgame, and endgame) for accurate evaluation.
+- Supports legal move generation
+- Evaluates board positions based on material and positional values
+- Uses alpha-beta pruning to optimize search depth
+- Allows human vs. AI play
+- Displays board using Unicode chess symbols
 
 ## Installation
+```bash
+pip install chess
+```
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/yourusername/simple-chess-engine.git
-   cd simple-chess-engine
-   ```
-2. Install dependencies:
-   ```sh
-   pip install python-chess
-   ```
-
-## Usage
-
-Run the game using:
-```sh
+## How to Play
+Run the `main.py` file and choose whether to play as white or black:
+```bash
 python main.py
 ```
-You will be prompted to select your side (White or Black) and enter moves in algebraic notation (e.g., `e2e4`). The AI will respond based on its evaluation function.
+Enter your moves using standard chess notation (e.g., `e2e4`).
+
+## Algorithm
+The chess engine evaluates board positions using the following formula:
+
+\[ E = \sum_{i} \left( V(p_i) + P(p_i, s_i) \right) \]
+
+Where:
+- $E$ is the total evaluation score.
+- $V(p_i)$ is the material value of piece $p_i$.
+- $P(p_i, s_i)$ is the positional value of piece $p_i$ on square $s_i$.
+
+Material values are defined as:
+- Pawn: $100$
+- Knight: $320$
+- Bishop: $330$
+- Rook: $500$
+- Queen: $900$
+- King: $20000$
+
+Each piece has a predefined positional evaluation table that adjusts its score based on its position.
+
+## Minimax Algorithm with Alpha-Beta Pruning
+The engine searches for the best move using a depth-limited minimax algorithm with alpha-beta pruning:
+
+1. Generate all legal moves.
+2. Evaluate the resulting board positions using the evaluation function.
+3. Recursively apply the minimax algorithm to explore deeper moves.
+4. Use alpha-beta pruning to eliminate unnecessary branches and improve efficiency.
+
+The minimax formula is:
+
+\[ V(s, d) = \begin{cases} \max_{a \in A(s)} V(s', d-1) & \text{if maximizing player} \\ \min_{a \in A(s)} V(s', d-1) & \text{if minimizing player} \end{cases} \]
+
+Where:
+- $V(s, d)$ is the evaluation score at state $s$ and depth $d$.
+- $A(s)$ is the set of available actions from state $s$.
+- $s'$ is the resulting state after taking action $a$.
+
+Alpha-beta pruning ensures that unnecessary branches are cut off when:
+- $\alpha \geq eta$
+- $\alpha = \max(\alpha, V(s', d-1))$ for the maximizing player
+- $eta = \min(\beta, V(s', d-1))$ for the minimizing player
 
 ## File Structure
 ```
-├── evaluate.py        # Contains evaluation logic for board positions
-├── movegeneration.py  # Implements AI move generation
-├── main.py            # Runs the game and handles user input
-└── README.md          # Documentation
-```
-
-## Evaluation Function
-The engine evaluates moves based on:
-1. **Piece Value:** Each piece has a predefined static value:
-   - Pawn: \(100\)
-   - Knight: \(320\)
-   - Bishop: \(330\)
-   - Rook: \(500\)
-   - Queen: \(900\)
-   - King: \(20000\)
-
-2. **Positional Heuristics:** Each piece has a position-based evaluation table (piece-square tables) to favor good positions.
-3. **Captures:** Moves that capture higher-value pieces are favored.
-4. **Endgame Heuristics:** Different evaluation for king positioning in the endgame.
-
-### Move Evaluation Formula
-For a given move \(m\), the evaluation function is:
-\[
-V(m) = V_{capture} + (V_{to} - V_{from})
-\]
-where:
-- \(V_{capture}\) is the value of the captured piece (if any).
-- \(V_{to}\) and \(V_{from}\) are the positional values before and after the move.
-
-If the move is a promotion, it gets a high positive score.
-
-## Example Game
-```
-Start as [w]hite or [b]lack:
-w
-  8 ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜
-  7 ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟
-  6 · · · · · · · ·
-  5 · · · · · · · ·
-  4 · · · · · · · ·
-  3 · · · · · · · ·
-  2 ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙
-  1 ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖
-    a b c d e f g h
-
-Your move:
-e2e4
-...
+chess-engine/
+├── evaluate.py       # Board evaluation logic
+├── movegeneration.py # Move generation and minimax implementation
+├── main.py           # Main game loop
+├── README.md         # Project documentation
 ```
 
 ## Future Improvements
-- Implementing Minimax with Alpha-Beta pruning.
-- Adding a more sophisticated evaluation function.
-- Enhancing AI difficulty levels.
+- Implement transposition tables for better performance
+- Add support for different search heuristics (e.g., iterative deepening, Monte Carlo Tree Search)
+- Improve positional evaluation with neural networks
 
 ## License
-This project is open-source and licensed under the MIT License.
+This project is open-source and available under the MIT License.
 
