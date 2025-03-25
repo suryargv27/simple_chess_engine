@@ -25,7 +25,9 @@ Enter your moves using standard chess notation (e.g., `e2e4`).
 ## Algorithm
 The chess engine evaluates board positions using the following formula:
 
-$ E = \sum_{i} \left( V(p_i) + P(p_i, s_i) \right) $
+$$
+E = \sum_{i} \left( V(p_i) + P(p_i, s_i) \right)
+$$
 
 Where:
 - $E$ is the total evaluation score.
@@ -52,7 +54,9 @@ The engine searches for the best move using a depth-limited minimax algorithm wi
 
 The minimax formula is:
 
-$ V(s, d) = \begin{cases} \max_{a \in A(s)} V(s', d-1) & \text{if maximizing player} \\ \min_{a \in A(s)} V(s', d-1) & \text{if minimizing player} \end{cases} $
+$$
+V(s, d) = \begin{cases} \max_{a \in A(s)} V(s', d-1) & \text{if maximizing player} \\ \min_{a \in A(s)} V(s', d-1) & \text{if minimizing player} \end{cases}
+$$
 
 Where:
 - $V(s, d)$ is the evaluation score at state $s$ and depth $d$.
